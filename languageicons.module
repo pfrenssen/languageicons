@@ -3,15 +3,15 @@
 
 /**
  * @file
- * Icons for language links
- * 
- * This is a spinf off from Internationalization (i18n) package
- * 
+ * Icons for language links.
+ *
+ * This is a spin off from the Internationalization (i18n) package.
+ *
  * @author Jose A. Reyero, 2007
  */
 
 /**
- * Implementation of hook_theme()
+ * Implementation of hook_theme().
  */
 function languageicons_theme() {
   return array(
@@ -27,18 +27,18 @@ function languageicons_theme() {
 /**
  * Implementation of hook_help().
  */
-function languageicons_help($section = 'admin/help#languageicons' ) {
-  switch ($section) {
+function languageicons_help($path, $arg) {
+  switch ($path) {
     case 'admin/help#languageicons' :
-      $output = '<p>'.t('This module manages language icons for multilingual sites:').'</p>';
+      $output = '<p>'. t('This module manages language icons for multilingual sites:') .'</p>';
       $output .= '<ul>';
-      $output .= '<li>'.t('Automatically adds icons to language links').'</li>';
-      $output .= '<li>'.t('Provides related theme functions').'</li>';
+      $output .= '<li>'. t('Automatically adds icons to language links') .'</li>';
+      $output .= '<li>'. t('Provides related theme functions') .'</li>';
       $output .= '</ul>';
-      $output .= '<p>'. t('For more information please read the <a href="@i18n">on-line help pages</a>.', array('@i18n' =>'http://drupal.org/node/31631')) .'</p>';
+      $output .= '<p>'. t('For more information please read the <a href="@i18n">on-line help pages</a>.', array('@i18n' => 'http://drupal.org/node/31631')) .'</p>';
       return $output;
     case 'admin/settings/languageicons':
-      $output .= '<p>'.t('To enable multilingual support for specific content types go to !configure_content_types.', array('!configure_content_types' => l(t('configure content types'), 'admin/content/types'), )).'</p>';
+      $output .= '<p>'. t('To enable multilingual support for specific content types go to !configure_content_types.', array('!configure_content_types' => l(t('configure content types'), 'admin/content/types'))) .'</p>';
       return $output;
   }
 }
@@ -61,6 +61,7 @@ function languageicons_menu() {
     'weight' => 10,
     'type' => MENU_LOCAL_TASK,
     'access arguments' => array('administer languages'),
+    'file' => 'languageicons.admin.inc',
   );
   return $items;
 }
@@ -87,7 +88,7 @@ function languageicons_link_alter(&$links, $node) {
   if (variable_get('languageicons_show_node', 1) && (!empty($node->tnid)) && $translations = module_invoke('translation', 'node_get_translations', $node->tnid)) {
     $languages = language_list();
     foreach ($translations as $langcode => $translation) {
-      $index = 'node_translation_'.$langcode;
+      $index = 'node_translation_'. $langcode;
       if (!empty($links[$index])) {
         languageicons_link_add($links[$index]);
       }
@@ -96,90 +97,44 @@ function languageicons_link_alter(&$links, $node) {
 }
 
 /**
- * Add language icon to link
- * 
- * The language icon may be a different language as the destination page, can be passed in 'language_icon'
+ * Add language icon to link.
+ *
+ * The language icon may be a different language as the destination page, can be passed in 'language_icon'.
  */
 function languageicons_link_add(&$link, $title = NULL) {
   $language = isset($link['language_icon']) ? $link['language_icon'] : $link['language'];
   $title = $title ? $title : $link['title'];
   if ($icon = theme('languageicons_icon', $language, $title)) {
     $link['title'] = theme('languageicons_place', $link['title'], $icon);
-    $link['html'] = TRUE;    
+    $link['html'] = TRUE;
   }
 }
 
 /**
- * Form builder function.
- * 
+ * Theme language icon.
+ *
+ * This function can be overridden for no language icons.
  */
-function languageicons_admin_settings() {
-  
-  $form['show'] = array(
-    '#type' => 'fieldset',
-    '#title' => t('Add language icons'),
-    '#description' => t('Link types to add language icons.'),
-  );
-  $form['show']['languageicons_show_node'] = array(
-    '#type' => 'checkbox',
-    '#title' => t('Node links'),
-    '#default_value' => variable_get('languageicons_show_node', 1),
-  );
-  $form['show']['languageicons_show_block'] = array(
-    '#type' => 'checkbox',
-    '#title' => t('Language switcher block'),
-    '#default_value' => variable_get('languageicons_show_block', 1),
-  );
-  $form['languageicons_placement'] = array(
-    '#type' => 'radios',
-    '#title' => t('Icon placement'),
-    '#options' => array('before' => t('Before'), 'after' => t('After'), 'replace' => t('Replace')),
-    '#default_value' => variable_get('languageicons_placement', 'before'),
-    '#description' => t('Where to display the icon, relative to the link title.'),
-  );
-  $form['languageicons_path'] = array(
-    '#type' => 'textfield',
-    '#title' => t('Icons file path'),
-    '#default_value' => variable_get('languageicons_path', drupal_get_path('module', 'languageicons').'/flags/*.png'),
-    '#size' => 70,
-    '#maxlength' => 180,
-    '#description' => t('Path for language icons, relative to Drupal installation. \'*\' is a placeholder for language code.'),
-  );
-  $form['languageicons_size'] = array(
-    '#type' => 'textfield',
-    '#title' => t('Image size'),
-    '#default_value' => variable_get('languageicons_size', '16x12'),
-    '#size' => 10,
-    '#maxlength' => 10,
-    '#description' => t('Image size for language icons, in the form "width x height".'),
-  );
-
-  return system_settings_form($form);
-}
-
-/**
- * Theme language icon
- * 
- * This function can be overridden for no language icons
- */
-function theme_languageicons_icon($language, $title = NULL){
-  if ($path = variable_get('languageicons_path', drupal_get_path('module', 'languageicons').'/flags/*.png')) {
-    $src = base_path().str_replace('*', $language->language, $path);
+function theme_languageicons_icon($language, $title = NULL) {
+  if ($path = variable_get('languageicons_path', drupal_get_path('module', 'languageicons') .'/flags/*.png')) {
+    $src = base_path() . str_replace('*', $language->language, $path);
     $title = $title ? $title : $language->native;
     $attribs = array('class' => 'language-icon', 'alt' => $title);
     if ($size = variable_get('languageicons_size', '16x12')) {
       list($width, $height) = explode('x', $size);
       $attribs += array('width' => $width, 'height' => $height);
     }
-    return "<img src=\"$src\" ".drupal_attributes($attribs)." />";
+    return "<img src='$src' ". drupal_attributes($attribs) .' />';
   }
 }
 
 /**
- * Theme language icon and text
+ * Theme language icon and text.
+ *
+ * @ingroup themeable
  */
 function theme_languageicons_place($text, $icon, $separator = ' ') {
-  switch(variable_get('languageicons_placement', 'before')) {
+  switch (variable_get('languageicons_placement', 'before')) {
     case 'after':
       return $text . $separator . $icon;
     case 'replace':
