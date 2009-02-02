@@ -47,11 +47,15 @@ function languageicons_help($path, $arg) {
  * Implementation of hook_menu().
  */
 function languageicons_menu() {
-  $items['admin/settings/language/configure/options'] = array(
-    'title' => 'Configure',
-    'weight' => 10,
-    'type' => MENU_DEFAULT_LOCAL_TASK,
+  // Direct copy of the Configure tab from locale module to
+  // make space for the "Localization sharing" tab below.
+  $items['admin/settings/language/configure/language'] = array(
+    'title' => 'Language negotiation',
+    'page callback' => 'locale_inc_callback',
+    'page arguments' => array('drupal_get_form', 'locale_languages_configure_form'),
     'access arguments' => array('administer languages'),
+    'weight' => -10,
+    'type' => MENU_DEFAULT_LOCAL_TASK,
   );
 
   $items['admin/settings/language/configure/icons'] = array(
