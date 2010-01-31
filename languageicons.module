@@ -60,7 +60,7 @@ function languageicons_menu() {
 }
 
 /**
- * Implementation of hook_alter_translation_link().
+ * Implementation of hook_translation_link_alter().
  *
  * Adds language icons to normal translation links.
  */
