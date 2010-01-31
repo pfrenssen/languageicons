@@ -25,6 +25,7 @@ function languageicons_uninstall() {
     'languageicons_placement',
     'languageicons_path',
     'languageicons_size',
+    'languageicons_show_tooltip',
   );
   foreach ($variables as $variable) {
     variable_del($variable);

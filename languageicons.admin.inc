@@ -51,6 +51,12 @@ function languageicons_admin_settings() {
     '#maxlength' => 10,
     '#description' => t('Image size for language icons, in the form "width x height".'),
   );
+  $form['show']['languageicons_show_tooltip'] = array(
+    '#type' => 'checkbox',
+    '#title' => t('Show tooltips'),
+    '#description' => t('Show tooltips on the icons displaying the language name'),
+    '#default_value' => variable_get('languageicons_show_tooltip', TRUE),
+  );
 
   return system_settings_form($form);
 }
