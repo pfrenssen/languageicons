@@ -1,4 +1,4 @@
-name = Language Icons
+name = Language icons
 description = Adds icons to language links.
 dependencies[] = locale
 package = Multilanguage

@@ -26,19 +26,21 @@ function languageicons_theme() {
 
 /**
  * Implementation of hook_help().
+ *
+ * @todo The @handbook link needs to change to a module specific one.
  */
 function languageicons_help($path, $arg) {
   switch ($path) {
     case 'admin/help#languageicons' :
       $output = '<p>'. t('This module manages language icons for multilingual sites:') .'</p>';
       $output .= '<ul>';
-      $output .= '<li>'. t('Automatically adds icons to language links') .'</li>';
-      $output .= '<li>'. t('Provides related theme functions') .'</li>';
+      $output .= '<li>'. t('Automatically adds icons to language links.') .'</li>';
+      $output .= '<li>'. t('Provides related theme functions.') .'</li>';
       $output .= '</ul>';
-      $output .= '<p>'. t('For more information please read the <a href="@i18n">on-line help pages</a>.', array('@i18n' => 'http://drupal.org/node/31631')) .'</p>';
+      $output .= '<p>'. t('For more information, please see <a href="@handbook">the online handbook section</a>.', array('@handbook' => 'http://drupal.org/node/133977')) .'</p>';
       return $output;
     case 'admin/settings/languageicons':
-      $output .= '<p>'. t('To enable multilingual support for specific content types go to !configure_content_types.', array('!configure_content_types' => l(t('configure content types'), 'admin/content/types'))) .'</p>';
+      $output .= '<p>'. t('To enable multilingual support for specific content types go to <a href="@configure_content_types">configure content types</a>.', array('@configure_content_types' => url('admin/content/types'))) .'</p>';
       return $output;
   }
 }
