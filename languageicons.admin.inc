@@ -36,7 +36,7 @@ function languageicons_admin_settings() {
     '#options' => array(
       'before' => t('Before link'),
       'after' => t('After link'),
-      'replace' => t('Replace link')
+      'replace' => t('Replace link'),
     ),
     '#default_value' => variable_get('languageicons_placement', 'before'),
     '#description' => t('Where to display the icon, relative to the link title.'),
