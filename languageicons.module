@@ -114,10 +114,11 @@ function theme_languageicons_icon($language, $title = NULL) {
   if ($path = variable_get('languageicons_path', drupal_get_path('module', 'languageicons') .'/flags/*.png')) {
     $src = base_path() . str_replace('*', $language->language, $path);
     $title = $title ? $title : $language->native;
-    $attribs = array('class' => 'language-icon', 'alt' => $title);
-    if (variable_get('languageicons_show_tooltip', TRUE)) {
-      $attribs['title'] = $title;
-    }
+    $attribs = array(
+      'class' => 'language-icon',
+      'alt' => $title,
+      'title' => $title,
+    );
     if ($size = variable_get('languageicons_size', '16x12')) {
       list($width, $height) = explode('x', $size);
       $attribs += array('width' => $width, 'height' => $height);

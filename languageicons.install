@@ -67,3 +67,13 @@ function languageicons_update_6000() {
   _languageicons_convert_i18n_icon_variables();
   return array();
 }
+
+/**
+ * Remove variable used for a short time during development of 6.x-2.x.
+ *
+ * @todo Remove this after the release of 6.x-2.0.
+ */
+function languageicons_update_6200() {
+  variable_del('languageicons_show_tooltip');
+  return array();
+}
