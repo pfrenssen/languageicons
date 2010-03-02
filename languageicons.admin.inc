@@ -44,7 +44,7 @@ function languageicons_admin_settings() {
   $form['languageicons_path'] = array(
     '#type' => 'textfield',
     '#title' => t('Icons file path'),
-    '#default_value' => variable_get('languageicons_path', drupal_get_path('module', 'languageicons') .'/flags/*.png'),
+    '#default_value' => variable_get('languageicons_path', drupal_get_path('module', 'languageicons') . '/flags/*.png'),
     '#size' => 70,
     '#maxlength' => 180,
     '#description' => t('Path for language icons, relative to Drupal installation. "*" is a placeholder for language code.'),

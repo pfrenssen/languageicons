@@ -9,7 +9,7 @@
  */
 
 /**
- * Implementation of hook_theme().
+ * Implements hook_theme().
  */
 function languageicons_theme() {
   return array(
@@ -23,31 +23,31 @@ function languageicons_theme() {
 }
 
 /**
- * Implementation of hook_help().
+ * Implements hook_help().
  *
  * @todo The @handbook link needs to change to a module specific one.
  */
 function languageicons_help($path, $arg) {
   switch ($path) {
     case 'admin/help#languageicons' :
-      $output = '<p>'. t('This module manages language icons for multilingual sites:') .'</p>';
+      $output = '<p>' . t('This module manages language icons for multilingual sites:') . '</p>';
       $output .= '<ul>';
-      $output .= '<li>'. t('Automatically adds icons to language links.') .'</li>';
-      $output .= '<li>'. t('Provides related theme functions.') .'</li>';
+      $output .= '<li>' . t('Automatically adds icons to language links.') . '</li>';
+      $output .= '<li>' . t('Provides related theme functions.') . '</li>';
       $output .= '</ul>';
-      $output .= '<p>'. t('For more information, please see <a href="@handbook">the online handbook section</a>.', array('@handbook' => 'http://drupal.org/node/133977')) .'</p>';
+      $output .= '<p>' . t('For more information, please see <a href="@handbook">the online handbook section</a>.', array('@handbook' => 'http://drupal.org/node/133977')) . '</p>';
       return $output;
     case 'admin/settings/languageicons':
-      $output .= '<p>'. t('To enable multilingual support for specific content types go to <a href="@configure_content_types">configure content types</a>.', array('@configure_content_types' => url('admin/content/types'))) .'</p>';
+      $output .= '<p>' . t('To enable multilingual support for specific content types go to <a href="@configure_content_types">configure content types</a>.', array('@configure_content_types' => url('admin/content/types'))) . '</p>';
       return $output;
   }
 }
 
 /**
- * Implementation of hook_menu().
+ * Implements hook_menu().
  */
 function languageicons_menu() {
-  $items['admin/settings/language/icons'] = array(
+  $items['admin/config/regional/language/icons'] = array(
     'title' => 'Icons',
     'page callback' => 'drupal_get_form',
     'page arguments' => array('languageicons_admin_settings'),
@@ -60,9 +60,11 @@ function languageicons_menu() {
 }
 
 /**
- * Implementation of hook_translation_link_alter().
+ * Implements hook_translation_link_alter().
  *
  * Adds language icons to normal translation links.
+ *
+ * @todo This needs to implement hook_language_switch_links_alter() instead.
  */
 function languageicons_translation_link_alter(&$links, $path) {
   if (variable_get('languageicons_show_block', 1)) {
@@ -73,7 +75,7 @@ function languageicons_translation_link_alter(&$links, $path) {
 }
 
 /**
- * Implementation of hook_link_alter().
+ * Implements hook_link_alter().
  *
  * Adds language icons to node links.
  */
@@ -81,7 +83,7 @@ function languageicons_link_alter(&$links, $node) {
   if (variable_get('languageicons_show_node', 1) && (!empty($node->tnid)) && $translations = module_invoke('translation', 'node_get_translations', $node->tnid)) {
     $languages = language_list();
     foreach ($translations as $langcode => $translation) {
-      $index = 'node_translation_'. $langcode;
+      $index = 'node_translation_' . $langcode;
       if (!empty($links[$index])) {
         languageicons_link_add($links[$index]);
       }
@@ -109,7 +111,7 @@ function languageicons_link_add(&$link, $title = NULL) {
  * This function can be overridden for no language icons.
  */
 function theme_languageicons_icon($language, $title = NULL) {
-  if ($path = variable_get('languageicons_path', drupal_get_path('module', 'languageicons') .'/flags/*.png')) {
+  if ($path = variable_get('languageicons_path', drupal_get_path('module', 'languageicons') . '/flags/*.png')) {
     $src = base_path() . str_replace('*', $language->language, $path);
     $title = $title ? $title : $language->native;
     $attribs = array(
@@ -121,7 +123,7 @@ function theme_languageicons_icon($language, $title = NULL) {
       list($width, $height) = explode('x', $size);
       $attribs += array('width' => $width, 'height' => $height);
     }
-    return "<img src='$src' ". drupal_attributes($attribs) .' />';
+    return "<img src='$src' " . drupal_attributes($attribs) . ' />';
   }
 }
 
