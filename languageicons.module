@@ -14,10 +14,10 @@
 function languageicons_theme() {
   return array(
     'languageicons_icon' => array(
-      'arguments' => array('language' => NULL, 'title' => NULL),
+      'variables' => array('language' => NULL, 'title' => NULL),
     ),
     'languageicons_place' => array(
-      'arguments' => array('text' => NULL, 'icon' => NULL, 'separator' => ' '),
+      'variables' => array('text' => NULL, 'icon' => NULL, 'separator' => ' '),
     ),
   );
 }
@@ -99,8 +99,15 @@ function languageicons_link_alter(&$links, $node) {
 function languageicons_link_add(&$link, $title = NULL) {
   $language = isset($link['language_icon']) ? $link['language_icon'] : $link['language'];
   $title = $title ? $title : $link['title'];
-  if ($icon = theme('languageicons_icon', $language, $title)) {
-    $link['title'] = theme('languageicons_place', $link['title'], $icon);
+  $icon = theme('languageicons_icon', array(
+    'language' => $language,
+    'title' => $title,
+  ));
+  if ($icon) {
+    $link['title'] = theme('languageicons_place', array(
+      'text' => $link['title'],
+      'icon' => $icon,
+    ));
     $link['html'] = TRUE;
   }
 }
@@ -110,7 +117,13 @@ function languageicons_link_add(&$link, $title = NULL) {
  *
  * This function can be overridden for no language icons.
  */
-function theme_languageicons_icon($language, $title = NULL) {
+function theme_languageicons_icon($variables) {
+  // Merge in default values
+  $variables += array('title' => NULL);
+
+  $language = $variables['language'];
+  $title    = $variables['title'];
+
   if ($path = variable_get('languageicons_path', drupal_get_path('module', 'languageicons') . '/flags/*.png')) {
     $src = base_path() . str_replace('*', $language->language, $path);
     $title = $title ? $title : $language->native;
@@ -132,7 +145,14 @@ function theme_languageicons_icon($language, $title = NULL) {
  *
  * @ingroup themeable
  */
-function theme_languageicons_place($text, $icon, $separator = ' ') {
+function theme_languageicons_place($variables) {
+  // Merge in default values
+  $variables += array('separator' => ' ');
+
+  $text = $variables['text'];
+  $icon = $variables['icon'];
+  $separator = $variables['separator'];
+
   switch (variable_get('languageicons_placement', 'before')) {
     case 'after':
       return $text . $separator . $icon;
