@@ -63,8 +63,6 @@ function languageicons_menu() {
  * Implements hook_translation_link_alter().
  *
  * Adds language icons to normal translation links.
- *
- * @todo This needs to implement hook_language_switch_links_alter() instead.
  */
 function languageicons_translation_link_alter(&$links, $path) {
   if (variable_get('languageicons_show_block', 1)) {
@@ -75,18 +73,15 @@ function languageicons_translation_link_alter(&$links, $path) {
 }
 
 /**
- * Implements hook_link_alter().
+ * Implements hook_language_switch_links_alter().
  *
  * Adds language icons to node links.
  */
-function languageicons_link_alter(&$links, $node) {
-  if (variable_get('languageicons_show_node', 1) && (!empty($node->tnid)) && $translations = module_invoke('translation', 'node_get_translations', $node->tnid)) {
-    $languages = language_list();
-    foreach ($translations as $langcode => $translation) {
-      $index = 'node_translation_' . $langcode;
-      if (!empty($links[$index])) {
-        languageicons_link_add($links[$index]);
-      }
+function languageicons_language_switch_links_alter(array &$links, $type, $path) {
+  dpm($links);
+  if (variable_get('languageicons_show_node', 1) && module_exists('translation') && $paths = module_invoke('translation', 'path_get_translations', $path)) {
+    foreach ($links as $langcode => $link) {
+      languageicons_link_add($links[$langcode]);
     }
   }
 }
