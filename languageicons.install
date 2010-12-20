@@ -43,7 +43,7 @@ function _languageicons_convert_i18n_icon_variables() {
   foreach ($variables as $variable) {
     $old_variable = 'i18n_icon_' . $variable;
     $new_variable = 'languageicons_' . $variable;
-    if (variable_get($new_variable, NULL) === NULL) {
+    if (variable_get($new_variable) === NULL) {
       $old_variable_value = variable_get($old_variable, NULL);
       // If the standard path for flag icons was used, reset it.
       if ($variable == 'path') {
@@ -65,15 +65,15 @@ function _languageicons_convert_i18n_icon_variables() {
  */
 function languageicons_update_6000() {
   _languageicons_convert_i18n_icon_variables();
-  return array();
+  return t('Converted Internationalization (i18n) module settings to Language icons settings.');
 }
 
 /**
  * Remove variable used for a short time during development of 6.x-2.x.
  *
- * @todo Remove this after the release of 6.x-2.0.
+ * @todo Remove this after the release of 7.x-1.0.
  */
 function languageicons_update_6200() {
   variable_del('languageicons_show_tooltip');
-  return array();
+  return t('Removed site variable used during development of 6.x-2.x.');
 }

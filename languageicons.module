@@ -29,7 +29,7 @@ function languageicons_theme() {
  */
 function languageicons_help($path, $arg) {
   switch ($path) {
-    case 'admin/help#languageicons' :
+    case 'admin/help#languageicons':
       $output = '<p>' . t('This module manages language icons for multilingual sites:') . '</p>';
       $output .= '<ul>';
       $output .= '<li>' . t('Automatically adds icons to language links.') . '</li>';
@@ -37,8 +37,8 @@ function languageicons_help($path, $arg) {
       $output .= '</ul>';
       $output .= '<p>' . t('For more information, please see <a href="@handbook">the online handbook section</a>.', array('@handbook' => 'http://drupal.org/node/133977')) . '</p>';
       return $output;
-    case 'admin/settings/languageicons':
-      $output .= '<p>' . t('To enable multilingual support for specific content types go to <a href="@configure_content_types">configure content types</a>.', array('@configure_content_types' => url('admin/content/types'))) . '</p>';
+    case 'admin/config/languageicons':
+      $output .= '<p>' . t('To enable multilingual support for specific content types go to <a href="@configure_content_types">configure content types</a>.', array('@configure_content_types' => url('admin/structure/types'))) . '</p>';
       return $output;
   }
 }
@@ -73,14 +73,18 @@ function languageicons_translation_link_alter(&$links, $path) {
 }
 
 /**
- * Implements hook_language_switch_links_alter().
+ * Implements hook_link_alter().
  *
  * Adds language icons to node links.
  */
-function languageicons_language_switch_links_alter(array &$links, $type, $path) {
-  if (variable_get('languageicons_show_node', 1) && module_exists('translation') && $paths = module_invoke('translation', 'path_get_translations', $path)) {
-    foreach ($links as $langcode => $link) {
-      languageicons_link_add($links[$langcode]);
+function languageicons_link_alter(&$links, $node) {
+  if (variable_get('languageicons_show_node', 1) && (!empty($node->tnid)) && $translations = module_invoke('translation', 'node_get_translations', $node->tnid)) {
+    $languages = language_list();
+    foreach ($translations as $langcode => $translation) {
+      $index = 'node_translation_' . $langcode;
+      if (!empty($links[$index])) {
+        languageicons_link_add($links[$index]);
+      }
     }
   }
 }
@@ -112,9 +116,6 @@ function languageicons_link_add(&$link, $title = NULL) {
  * This function can be overridden for no language icons.
  */
 function theme_languageicons_icon($variables) {
-  // Merge in default values
-  $variables += array('title' => NULL);
-
   $language = $variables['language'];
   $title    = $variables['title'];
 
@@ -140,9 +141,6 @@ function theme_languageicons_icon($variables) {
  * @ingroup themeable
  */
 function theme_languageicons_place($variables) {
-  // Merge in default values
-  $variables += array('separator' => ' ');
-
   $text = $variables['text'];
   $icon = $variables['icon'];
   $separator = $variables['separator'];
