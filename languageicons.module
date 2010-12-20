@@ -37,8 +37,8 @@ function languageicons_help($path, $arg) {
       $output .= '</ul>';
       $output .= '<p>' . t('For more information, please see <a href="@handbook">the online handbook section</a>.', array('@handbook' => 'http://drupal.org/node/133977')) . '</p>';
       return $output;
-    case 'admin/config/languageicons':
-      $output .= '<p>' . t('To enable multilingual support for specific content types go to <a href="@configure_content_types">configure content types</a>.', array('@configure_content_types' => url('admin/structure/types'))) . '</p>';
+    case 'admin/config/regional/language/icons':
+      $output = '<p>' . t('To enable multilingual support for specific content types go to <a href="@configure_content_types">configure content types</a>.', array('@configure_content_types' => url('admin/structure/types'))) . '</p>';
       return $output;
   }
 }
