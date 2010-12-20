@@ -114,24 +114,29 @@ function languageicons_link_add(&$link, $title = NULL) {
  * Theme language icon.
  *
  * This function can be overridden for no language icons.
+ *
+ * @seealso theme_image()
  */
 function theme_languageicons_icon($variables) {
   $language = $variables['language'];
   $title    = $variables['title'];
 
   if ($path = variable_get('languageicons_path', drupal_get_path('module', 'languageicons') . '/flags/*.png')) {
-    $src = base_path() . str_replace('*', $language->language, $path);
     $title = $title ? $title : $language->native;
-    $attribs = array(
-      'class' => 'language-icon',
+    // Build up $image for theme_image() consumption.
+    $image = array(
+      'path' => str_replace('*', $language->language, $path),
       'alt' => $title,
       'title' => $title,
+      'attributes' => array(
+        'class' => 'language-icon',
+      ),
     );
     if ($size = variable_get('languageicons_size', '16x12')) {
       list($width, $height) = explode('x', $size);
-      $attribs += array('width' => $width, 'height' => $height);
+      $image += array('width' => $width, 'height' => $height);
     }
-    return "<img src='$src' " . drupal_attributes($attribs) . ' />';
+    return theme('image', $image);
   }
 }
 
