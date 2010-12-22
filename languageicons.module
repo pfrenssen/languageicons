@@ -60,11 +60,14 @@ function languageicons_menu() {
 }
 
 /**
- * Implements hook_translation_link_alter().
+ * Implements hook_language_switch_links_alter().
  *
- * Adds language icons to normal translation links.
+ * Adds language icons to language switcher block links.
+ *
+ * @todo Figure out a way to either ignore node links or specifically target
+ *   them here. See http://drupal.org/node/1005144 for more info.
  */
-function languageicons_translation_link_alter(&$links, $path) {
+function languageicons_language_switch_links_alter(array &$links, $type, $path) {
   if (variable_get('languageicons_show_block', 1)) {
     foreach (array_keys($links) as $langcode) {
       languageicons_link_add($links[$langcode]);
@@ -73,15 +76,16 @@ function languageicons_translation_link_alter(&$links, $path) {
 }
 
 /**
- * Implements hook_link_alter().
+ * Implements hook_node_view_alter().
  *
  * Adds language icons to node links.
  */
-function languageicons_link_alter(&$links, $node) {
+function languageicons_node_view_alter(&$build) {
+  $node = $build['#node'];
   if (variable_get('languageicons_show_node', 1) && (!empty($node->tnid)) && $translations = module_invoke('translation', 'node_get_translations', $node->tnid)) {
-    $languages = language_list();
+    $links = &$build['links']['translation']['#links'];
     foreach ($translations as $langcode => $translation) {
-      $index = 'node_translation_' . $langcode;
+      $index = 'translation_' . $langcode;
       if (!empty($links[$index])) {
         languageicons_link_add($links[$index]);
       }
