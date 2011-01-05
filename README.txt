@@ -10,7 +10,7 @@ This module provides icons for language links, both for the Language switcher bl
 
 REQUIREMENTS
 ------------
-Drupal 6.x
+Drupal 7.x
 For a fully enabled multilingual site, the Internationalization (i18n) package is recommended. http://drupal.org/project/i18n 
 
 
@@ -24,15 +24,15 @@ Read more about installing modules at http://drupal.org/node/70151
 
 CONFIGURING AND USING
 ---------------------
-1. Go to admin/build/block
+1. Go to admin/structure/block
 
-2. Ensure that 'Language switcher' block is associated with a visible region. If unsure move the 'Language switcher' block to 'Left sidebar' region.
+2. Ensure that 'Language switcher' block is associated with a visible region. If unsure move the 'Language switcher' block to 'Sidebar first' region.
 
-3. Click on 'Save' button.
+3. Click on 'Save blocks' button.
 
 4. To preview simply view any appropriate page. If successful you will see a flag on the left side of each language link.
 
-There are some configuration options at admin/settings/language/icons. You can place flags before or after the language link or choose to only display the language flag without the language name (pick "Replace link" under icon placement to do so). There are some other options so make sure to check it out.
+There are some configuration options at admin/config/regional/language/icons. You can place flags before or after the language link or choose to only display the language flag without the language name (pick "Replace link" under icon placement to do so). There are some other options so make sure to check it out.
 
 
 CONTRIBUTING. REPORTING ISSUE. REQUESTING SUPPORT. REQUESTING NEW FEATURE.
