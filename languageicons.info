@@ -1,7 +1,7 @@
 name = Language icons
 description = Adds icons to language links.
 dependencies[] = locale
-package = Multilanguage
+package = Multilingual
 core = 7.x
 
 files[] = languageicons.module
