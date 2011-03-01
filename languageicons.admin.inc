@@ -17,16 +17,27 @@ function languageicons_admin_settings() {
     '#type' => 'fieldset',
     '#title' => t('Add language icons'),
     '#description' => t('Link types to add language icons.'),
+    '#collapsible' => TRUE,
+    '#collapsed' => TRUE,
   );
   $form['show']['languageicons_show_node'] = array(
     '#type' => 'checkbox',
     '#title' => t('Node links'),
     '#default_value' => variable_get('languageicons_show_node', 1),
+    '#disabled' => TRUE,
   );
   $form['show']['languageicons_show_block'] = array(
     '#type' => 'checkbox',
     '#title' => t('Language switcher block'),
     '#default_value' => variable_get('languageicons_show_block', 1),
+    '#disabled' => TRUE,
+  );
+  $form['show']['disabled'] = array(
+    '#prefix' => '<div class="messages error">',
+    '#markup' => t('These options are currently disabled due to <a href="!issue_url">a bug</a> that cannot currently be resolved. They may be reintroduced at a later stage.', array(
+      '!issue_url' => 'http://drupal.org/node/1005144',
+    )),
+    '#suffix' => '</div>',
   );
   $form['languageicons_placement'] = array(
     '#type' => 'radios',
