@@ -87,11 +87,11 @@ function languageicons_link_add(&$link, $title = NULL) {
   $title = $title ? $title : $link['title'];
   $icon = theme('languageicons_icon', array(
     'language' => $language,
-    'title' => $title,
+    'title' => check_plain($title),
   ));
   if ($icon) {
     $link['title'] = theme('languageicons_place', array(
-      'text' => $link['title'],
+      'text' => check_plain($link['title']),
       'icon' => $icon,
     ));
     $link['html'] = TRUE;
@@ -113,14 +113,14 @@ function theme_languageicons_icon($variables) {
     $title = $title ? $title : $language->native;
     // Build up $image for theme_image() consumption.
     $image = array(
-      'path' => str_replace('*', $language->language, $path),
+      'path' => str_replace('*', $language->language, check_plain($path)),
       'alt' => $title,
       'title' => $title,
       'attributes' => array(
         'class' => 'language-icon',
       ),
     );
-    if ($size = variable_get('languageicons_size', '16x12')) {
+    if ($size = check_plain(variable_get('languageicons_size', '16x12'))) {
       list($width, $height) = explode('x', $size);
       $image += array('width' => $width, 'height' => $height);
     }
