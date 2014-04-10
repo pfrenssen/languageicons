@@ -4,6 +4,3 @@ dependencies[] = locale
 package = Multilingual - Internationalization
 core = 7.x
 
-files[] = languageicons.module
-files[] = languageicons.admin.inc
-files[] = languageicons.install
