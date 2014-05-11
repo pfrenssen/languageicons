@@ -117,7 +117,7 @@ function theme_languageicons_icon($variables) {
       'alt' => $title,
       'title' => $title,
       'attributes' => array(
-        'class' => 'language-icon',
+        'class' => array('language-icon'),
       ),
     );
     if ($size = check_plain(variable_get('languageicons_size', '16x12'))) {
