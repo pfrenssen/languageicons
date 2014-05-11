@@ -3,4 +3,3 @@ description = Adds icons to language links.
 dependencies[] = locale
 package = Multilingual
 core = 7.x
-
