@@ -63,7 +63,7 @@ function _languageicons_convert_i18n_icon_variables() {
  */
 function languageicons_update_6000() {
   _languageicons_convert_i18n_icon_variables();
-  return t('Converted Internationalization (i18n) module settings to Language icons settings.');
+  return t('Converted Internationalization (i18n) module settings to Language Icons settings.');
 }
 
 /**

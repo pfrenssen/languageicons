@@ -1,4 +1,4 @@
-Language icons
+Language Icons
 http://drupal.org/project/languageicons
 =======================================
 

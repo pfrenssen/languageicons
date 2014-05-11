@@ -1,11 +1,11 @@
 <?php
 /**
  * @file
- * Admin page callbacks for the Language icons module.
+ * Admin page callbacks for the Language Icons module.
  */
 
 /**
- * Form builder; configure Language icons.
+ * Form builder; configure Language Icons.
  *
  * @todo Improve (re-phrase?) $form['show']['#description'].
  *
