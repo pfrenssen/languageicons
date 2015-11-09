@@ -42,22 +42,6 @@ function languageicons_help($path, $arg) {
 }
 
 /**
- * Implements hook_menu().
- */
-function languageicons_menu() {
-  $items['admin/config/regional/language/icons'] = array(
-    'title' => 'Icons',
-    'page callback' => 'drupal_get_form',
-    'page arguments' => array('languageicons_admin_settings'),
-    'weight' => 10,
-    'type' => MENU_LOCAL_TASK,
-    'access arguments' => array('administer languages'),
-    'file' => 'languageicons.admin.inc',
-  );
-  return $items;
-}
-
-/**
  * Implements hook_language_switch_links_alter().
  *
  * Adds language icons to language switcher block links.
