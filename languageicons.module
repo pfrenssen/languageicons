@@ -50,7 +50,7 @@ function languageicons_help($path, $arg) {
  *   them here. See http://drupal.org/node/1005144 for more info.
  */
 function languageicons_language_switch_links_alter(array &$links, $type, $path) {
-  if (variable_get('languageicons_show_block', 1) || variable_get('languageicons_show_node', 1)) {
+  if (\Drupal::config('languageicons.settings')->get('show_block') || \Drupal::config('languageicons.settings')->get('show_node')) {
     foreach (array_keys($links) as $langcode) {
       if (!isset($links[$langcode]['language'])) {
         $lang_obj['language'] = $langcode;
@@ -93,7 +93,7 @@ function theme_languageicons_icon($variables) {
   $language = $variables['language'];
   $title    = $variables['title'];
 
-  if ($path = variable_get('languageicons_path', drupal_get_path('module', 'languageicons') . '/flags/*.png')) {
+  if ($path = \Drupal::config('languageicons.settings')->get('path')) {
     $title = $title ? $title : $language->native;
     // Build up $image for theme_image() consumption.
     $image = array(
@@ -104,7 +104,7 @@ function theme_languageicons_icon($variables) {
         'class' => array('language-icon'),
       ),
     );
-    if ($size = check_plain(variable_get('languageicons_size', '16x12'))) {
+    if ($size = \Drupal\Component\Utility\Html::escape(\Drupal::config('languageicons.settings')->get('languageicons_size'))) {
       list($width, $height) = explode('x', $size);
       $image += array('width' => $width, 'height' => $height);
     }
@@ -122,7 +122,7 @@ function theme_languageicons_place($variables) {
   $icon = $variables['icon'];
   $separator = $variables['separator'];
 
-  switch (variable_get('languageicons_placement', 'before')) {
+  switch (\Drupal::config('languageicons.settings')->get('placement')) {
     case 'after':
       return $text . $separator . $icon;
     case 'replace':
