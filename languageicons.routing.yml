@@ -1,4 +1,4 @@
-languageicons.admin_settings:
+languageicons.settings:
   path: /admin/config/regional/language/icons
   defaults:
     _title: Icons
