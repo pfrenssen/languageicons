@@ -10,14 +10,16 @@
  * Implements hook_theme().
  */
 function languageicons_theme() {
-  return array(
-    'languageicons_icon' => array(
-      'variables' => array('language' => NULL, 'title' => NULL),
-    ),
-    'languageicons_place' => array(
-      'variables' => array('text' => NULL, 'icon' => NULL, 'separator' => ' '),
-    ),
-  );
+  return [
+    'languageicons_link_content' => [
+      'variables' => [
+        'language' => NULL,
+        'separator' => ' ',
+        'text' => NULL,
+        'title' => NULL,
+      ],
+    ],
+  ];
 }
 
 /**
@@ -63,71 +65,56 @@ function languageicons_language_switch_links_alter(array &$links, $type, $path) 
 /**
  * Add language icon to link.
  *
- * The language icon may be a different language as the destination page, can be passed in 'language_icon'.
+ * The language icon may be a different language as the destination page, can be
+ * passed in 'language_icon'.
  */
 function languageicons_link_add(&$link, $title = NULL) {
-  $language = isset($link['language_icon']) ? $link['language_icon'] : $link['language'];
-  $title = $title ? $title : $link['title'];
-  $icon = theme('languageicons_icon', array(
-    'language' => $language,
-    'title' => check_plain($title),
-  ));
-  if ($icon) {
-    $link['title'] = theme('languageicons_place', array(
-      'text' => check_plain($link['title']),
-      'icon' => $icon,
-    ));
-    $link['html'] = TRUE;
-  }
+  $link['title'] = [
+    '#theme' => 'languageicons_link_content',
+    '#language' => isset($link['language_icon']) ? $link['language_icon'] : $link['language'],
+    '#text' => $link['title'],
+    '#title' => $title ? $title : $link['title'],
+  ];
+
+  $link['html'] = TRUE;
 }
 
 /**
- * Theme language icon.
+ * Prepares variables for rendering the content of a language link.
  *
- * This function can be overridden for no language icons.
+ * Default template: languageicons-link-content.html.twig.
  *
- * @seealso theme_image()
+ * @param array $variables
+ *   An associative array containing:
+ *   - language: The language.
+ *   - separator: The separator between icon and link text.
+ *   - text: The text shown in the link.
+ *   - title: The image title for the icon.
+ *
+ * @throws \Exception
+ *   Thrown when the path to the language icon images is not set.
  */
-function theme_languageicons_icon($variables) {
+function template_preprocess_languageicons_link_content(&$variables) {
+  /** @var \Drupal\language\Entity\ConfigurableLanguage $language */
   $language = $variables['language'];
-  $title    = $variables['title'];
+  $title = $variables['title'] ? $variables['title'] : $language->getName();
+  $size = \Drupal::config('languageicons.settings')->get('languageicons_size');
+  list($width, $height) = explode('x', $size);
 
   if ($path = \Drupal::config('languageicons.settings')->get('path')) {
-    $title = $title ? $title : $language->native;
-    // Build up $image for theme_image() consumption.
-    $image = array(
-      'path' => str_replace('*', $language->language, check_plain($path)),
-      'alt' => $title,
-      'title' => $title,
-      'attributes' => array(
-        'class' => array('language-icon'),
-      ),
-    );
-    if ($size = \Drupal\Component\Utility\Html::escape(\Drupal::config('languageicons.settings')->get('languageicons_size'))) {
-      list($width, $height) = explode('x', $size);
-      $image += array('width' => $width, 'height' => $height);
-    }
-    return theme('image', $image);
+    $variables['icon'] = [
+      '#theme' => 'image',
+      '#uri' => str_replace('*', $language->id(), \Drupal\Component\Utility\Html::escape($path)),
+      '#alt' => $title,
+      '#title' => $title,
+      '#width' => $width,
+      '#height' => $height,
+      '#attributes' => ['class' => ['language-icon']],
+    ];
   }
-}
-
-/**
- * Theme language icon and text.
- *
- * @ingroup themeable
- */
-function theme_languageicons_place($variables) {
-  $text = $variables['text'];
-  $icon = $variables['icon'];
-  $separator = $variables['separator'];
-
-  switch (\Drupal::config('languageicons.settings')->get('placement')) {
-    case 'after':
-      return $text . $separator . $icon;
-    case 'replace':
-      return $icon;
-    case 'before':
-    default:
-      return $icon . $separator . $text;
+  else {
+    throw new \Exception('Path to language icons is not defined.');
   }
+
+  $variables['placement'] = \Drupal::config('languageicons.settings')->get('placement');
 }
