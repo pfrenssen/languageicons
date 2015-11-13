@@ -53,8 +53,7 @@ function languageicons_language_switch_links_alter(array &$links, $type, $path) 
   if (\Drupal::config('languageicons.settings')->get('show_block') || \Drupal::config('languageicons.settings')->get('show_node')) {
     foreach (array_keys($links) as $langcode) {
       if (!isset($links[$langcode]['language'])) {
-        $lang_obj['language'] = $langcode;
-        $links[$langcode]['language'] = (object) $lang_obj;
+        $links[$langcode]['language'] = \Drupal::languageManager()->getLanguage($langcode);
       }
       languageicons_link_add($links[$langcode]);
     }
