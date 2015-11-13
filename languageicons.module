@@ -98,7 +98,7 @@ function template_preprocess_languageicons_link_content(&$variables) {
   /** @var \Drupal\language\Entity\ConfigurableLanguage $language */
   $language = $variables['language'];
   $title = $variables['title'] ? $variables['title'] : $language->getName();
-  $size = \Drupal::config('languageicons.settings')->get('languageicons_size');
+  $size = \Drupal::config('languageicons.settings')->get('size');
   list($width, $height) = explode('x', $size);
 
   if ($path = \Drupal::config('languageicons.settings')->get('path')) {
